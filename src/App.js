@@ -6,7 +6,7 @@ import "./App.css";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tasks: [], currentTask: "", options: [], currentOption: "" };
+    this.state = { tasks: {}, currentTask: "", options: [], currentOption: "" };
     this.handleTaskInputChange = this.handleTaskInputChange.bind(this);
     this.handleAddTask = this.handleAddTask.bind(this);
     this.handleGroupInputChange = this.handleGroupInputChange.bind(this);
@@ -22,15 +22,24 @@ class App extends React.Component {
     if (!this.state.currentTask) {
       return;
     }
-    const newItem = {
-      task: this.state.currentTask,
-      id: new Date()
+    const newTask = {
+      id: new Date(),
+      task: this.state.currentTask
     };
-    this.setState(prevState => ({
-      tasks: prevState.tasks.concat(newItem),
-      currentTask: "",
-      currentOption: ""
-    }));
+    this.setState(prevState => {
+      const selectedGroup = this.state.currentOption;
+      console.log("previous state tasks ", prevState.tasks);
+      const allTasks = prevState.tasks;
+      if (!allTasks.hasOwnProperty(selectedGroup)) {
+        allTasks[selectedGroup] = [];
+      }
+      allTasks[selectedGroup] = allTasks[selectedGroup].concat(newTask);
+      return {
+        tasks: allTasks,
+        currentTask: "",
+        currentOption: ""
+      };
+    });
   };
 
   handleKeyPress = event => {
@@ -78,7 +87,7 @@ class App extends React.Component {
               Add
             </Button>
           </Input>
-          <TodoList tasks={this.state.tasks} />
+          {/* <TodoList tasks={this.state.tasks} /> */}
         </div>
       </div>
     );
