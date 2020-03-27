@@ -1,5 +1,5 @@
 import React from "react";
-import TodoList from "./TodoList";
+import TodoList from "./components/TodoList";
 import "./App.css";
 
 class App extends React.Component {
@@ -49,6 +49,7 @@ class App extends React.Component {
               placeholder="Add new task..."
               onChange={this.handleInputChange}
               onKeyPress={this.handleKeyPress}
+              autoFocus
             ></input>
             <button
               name="add-task"
