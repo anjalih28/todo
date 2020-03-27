@@ -3,7 +3,7 @@ import TodoItem from "./TodoItem";
 
 class TodoList extends React.Component {
   render() {
-    const listItems = this.props.items.map(item => {
+    const listItems = this.props.tasks.map(item => {
       return <TodoItem key={item.id} task={item.task} id={item.id} />;
     });
     return <div className="ui large aligned divided list">{listItems}</div>;

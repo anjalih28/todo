@@ -1,38 +1,51 @@
 import React from "react";
 import TodoList from "./components/TodoList";
+import { Button, Dropdown, Input } from "semantic-ui-react";
 import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], value: "" };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleAddItem = this.handleAddItem.bind(this);
+    this.state = { tasks: [], currentTask: "", options: [], currentOption: "" };
+    this.handleTaskInputChange = this.handleTaskInputChange.bind(this);
+    this.handleAddTask = this.handleAddTask.bind(this);
+    this.handleGroupInputChange = this.handleGroupInputChange.bind(this);
+    this.handleAddGroup = this.handleAddGroup.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  handleInputChange = event => {
-    this.setState({ value: event.target.value });
+  handleTaskInputChange = event => {
+    this.setState({ currentTask: event.target.value });
   };
 
-  handleAddItem = event => {
-    if (!this.state.value) {
+  handleAddTask = event => {
+    if (!this.state.currentTask) {
       return;
     }
     const newItem = {
-      task: this.state.value,
+      task: this.state.currentTask,
       id: new Date()
     };
     this.setState(prevState => ({
-      items: prevState.items.concat(newItem),
-      value: ""
+      tasks: prevState.tasks.concat(newItem),
+      currentTask: "",
+      currentOption: ""
     }));
   };
 
   handleKeyPress = event => {
     if (event.key === "Enter") {
-      this.handleAddItem();
+      this.handleAddTask();
     }
+  };
+
+  handleGroupInputChange = (e, { value }) =>
+    this.setState({ currentOption: value });
+
+  handleAddGroup = (e, { value }) => {
+    this.setState(prevState => ({
+      options: [{ text: value, value }, ...prevState.options]
+    }));
   };
 
   render() {
@@ -41,25 +54,31 @@ class App extends React.Component {
       <div>
         <h2>Todo</h2>
         <div className="todo-container">
-          <div className="ui action input todo-input">
+          <Input action>
             <input
-              type="text"
               name="task-input"
-              value={this.state.value}
-              placeholder="Add new task..."
-              onChange={this.handleInputChange}
+              type="text"
+              placeholder="Add new task"
+              value={this.state.currentTask}
+              onChange={this.handleTaskInputChange}
               onKeyPress={this.handleKeyPress}
               autoFocus
             ></input>
-            <button
-              name="add-task"
-              className="ui button"
-              onClick={this.handleAddItem}
-            >
+            <Dropdown
+              placeholder="Add group"
+              search
+              selection
+              allowAdditions
+              value={this.state.currentOption}
+              options={this.state.options}
+              onAddItem={this.handleAddGroup}
+              onChange={this.handleGroupInputChange}
+            />
+            <Button name="add-task" type="submit" onClick={this.handleAddTask}>
               Add
-            </button>
-          </div>
-          <TodoList items={this.state.items} />
+            </Button>
+          </Input>
+          <TodoList tasks={this.state.tasks} />
         </div>
       </div>
     );
