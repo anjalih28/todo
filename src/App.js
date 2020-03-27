@@ -24,7 +24,7 @@ class App extends React.Component {
     }
     const newTask = {
       id: new Date(),
-      task: this.state.currentTask
+      text: this.state.currentTask
     };
     this.setState(prevState => {
       const selectedGroup = this.state.currentOption;
@@ -87,7 +87,7 @@ class App extends React.Component {
               Add
             </Button>
           </Input>
-          {/* <TodoList tasks={this.state.tasks} /> */}
+          <TodoList tasks={this.state.tasks} />
         </div>
       </div>
     );

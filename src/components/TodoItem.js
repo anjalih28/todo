@@ -1,17 +1,16 @@
 import React from "react";
+import { Checkbox, Icon, List } from "semantic-ui-react";
 
 class TodoItem extends React.Component {
   render() {
+    console.log(this.props.taskDetails);
     return (
-      <div className="item" id={this.props.id}>
-        <div className="right floated content">
-          <i className="trash icon"></i>
-        </div>
-        <div className="ui checkbox">
-          <input type="checkbox" name="example" />
-          <label>{this.props.task}</label>
-        </div>
-      </div>
+      <List.Item>
+        <List.Content floated="right">
+          <Icon name="trash" />
+        </List.Content>
+        <Checkbox label={this.props.text} />
+      </List.Item>
     );
   }
 }
