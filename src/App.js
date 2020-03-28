@@ -6,7 +6,12 @@ import "./App.css";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tasks: {}, currentTask: "", options: [], currentOption: "" };
+    this.state = {
+      tasks: {},
+      currentTask: "",
+      options: [],
+      currentOption: ""
+    };
   }
 
   handleTaskInputChange = event => {
