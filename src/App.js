@@ -19,18 +19,18 @@ class App extends React.Component {
   };
 
   handleAddTask = event => {
-    if (!this.state.currentTask) {
+    if (!this.state.currentTask || !this.state.currentOption) {
       return;
     }
     const newTask = {
       id: new Date(),
-      text: this.state.currentTask
+      text: this.state.currentTask,
+      active: true
     };
     this.setState(prevState => {
       const selectedGroup = this.state.currentOption;
-      console.log("previous state tasks ", prevState.tasks);
       const allTasks = prevState.tasks;
-      if (!allTasks.hasOwnProperty(selectedGroup)) {
+      if (selectedGroup && !allTasks.hasOwnProperty(selectedGroup)) {
         allTasks[selectedGroup] = [];
       }
       allTasks[selectedGroup] = allTasks[selectedGroup].concat(newTask);
@@ -55,6 +55,18 @@ class App extends React.Component {
     this.setState(prevState => ({
       options: [{ text: value, value }, ...prevState.options]
     }));
+  };
+
+  handleCheckItem = itemId => {
+    const allTasks = this.state.tasks;
+    for (let group of Object.keys(allTasks)) {
+      allTasks[group] = allTasks[group].map(item => {
+        if (item.id === itemId) {
+          item.active = !item.active;
+        }
+        return item;
+      });
+    }
   };
 
   render() {
@@ -87,7 +99,7 @@ class App extends React.Component {
               Add
             </Button>
           </Input>
-          <TodoList tasks={this.state.tasks} />
+          <TodoList tasks={this.state.tasks} checkItem={this.handleCheckItem} />
         </div>
       </div>
     );

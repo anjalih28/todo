@@ -6,7 +6,13 @@ class TodoList extends React.Component {
   render() {
     const allTasks = this.props.tasks;
     const listGroups = Object.keys(allTasks).map(key => {
-      return <TodoListGroup tasks={allTasks[key]} group={key} />;
+      return (
+        <TodoListGroup
+          tasks={allTasks[key]}
+          group={key}
+          checkItem={this.props.checkItem}
+        />
+      );
     });
     return <List as="ol">{listGroups}</List>;
   }
