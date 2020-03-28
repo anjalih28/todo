@@ -7,11 +7,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { tasks: {}, currentTask: "", options: [], currentOption: "" };
-    this.handleTaskInputChange = this.handleTaskInputChange.bind(this);
-    this.handleAddTask = this.handleAddTask.bind(this);
-    this.handleGroupInputChange = this.handleGroupInputChange.bind(this);
-    this.handleAddGroup = this.handleAddGroup.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleTaskInputChange = event => {
@@ -67,6 +62,20 @@ class App extends React.Component {
         return item;
       });
     }
+    this.setState({ tasks: allTasks });
+  };
+
+  handleDeleteItem = itemId => {
+    const allTasks = this.state.tasks;
+    for (let group of Object.keys(allTasks)) {
+      allTasks[group] = allTasks[group].filter(item => {
+        if (item.id !== itemId) {
+          return true;
+        }
+        return false;
+      });
+    }
+    this.setState({ tasks: allTasks });
   };
 
   render() {
@@ -99,7 +108,11 @@ class App extends React.Component {
               Add
             </Button>
           </Input>
-          <TodoList tasks={this.state.tasks} checkItem={this.handleCheckItem} />
+          <TodoList
+            tasks={this.state.tasks}
+            checkItem={this.handleCheckItem}
+            deleteItem={this.handleDeleteItem}
+          />
         </div>
       </div>
     );

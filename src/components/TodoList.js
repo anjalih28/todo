@@ -11,6 +11,7 @@ class TodoList extends React.Component {
           tasks={allTasks[key]}
           group={key}
           checkItem={this.props.checkItem}
+          deleteItem={this.props.deleteItem}
         />
       );
     });

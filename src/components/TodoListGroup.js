@@ -4,13 +4,14 @@ import { List } from "semantic-ui-react";
 
 class TodoListGroup extends React.Component {
   render() {
-    const listItems = this.props.tasks.map(task => {
+    const listItems = this.props.tasks.map(item => {
       return (
         <TodoItem
-          text={task.text}
-          key={task.id}
+          task={item}
           checkItem={this.props.checkItem}
-          id={task.id}
+          deleteItem={this.props.deleteItem}
+          id={item.id}
+          key={item.id}
         />
       );
     });
