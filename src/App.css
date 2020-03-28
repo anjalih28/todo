@@ -4,12 +4,18 @@ body {
   padding: 30px 20px;
 }
 
-.todo-container {
+.list-container {
   width: 100%;
-  background-color: beige;
+  height: 85vh;
+  background-color: #edf5e1;
   display: flex;
-  justify-content: center;
   align-items: stretch;
   flex-direction: column;
   padding: 20px 10px;
+  border-radius: 10px;
+}
+
+.task-container {
+  width: 100%;
+  margin-top: 10px;
 }

@@ -1,4 +1,4 @@
-.task-complete {
+.task-complete label {
   text-decoration: line-through;
   font-style: italic;
 }
