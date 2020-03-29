@@ -2,3 +2,18 @@
   text-decoration: line-through;
   font-style: italic;
 }
+
+.task-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.task-inputs {
+  display: flex;
+  align-items: center;
+}
+
+.new-task-input {
+  flex-grow: 1;
+  margin-right: 40px;
+}

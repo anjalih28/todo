@@ -1,18 +1,21 @@
 import React from "react";
 import TodoItem from "./TodoItem";
-import { Button, Input, List } from "semantic-ui-react";
+import { Button, Dropdown, Input, List } from "semantic-ui-react";
 
 class TodoList extends React.Component {
-  state = {
-    tasks: {
-      React: [
-        { id: new Date(), text: "Make a todo app", active: true },
-        { id: new Date(), text: "Read the docs", active: true },
-        { id: new Date(), text: "Do the course", active: true }
-      ]
-    },
-    latestTask: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      tasks: {},
+      latestTask: "",
+      filterOption: "All"
+    };
+    this.filterConfig = [
+      { key: "All", text: "All", value: "All" },
+      { key: "Active", text: "Active", value: "Active" },
+      { key: "Completed", text: "Completed", value: "Completed" }
+    ];
+  }
   handleTaskInputChange = event => {
     this.setState({ latestTask: event.target.value });
   };
@@ -29,12 +32,10 @@ class TodoList extends React.Component {
     this.setState(prevState => {
       const selectedList = this.props.selectedList;
       const allTasks = prevState.tasks;
-      console.log(allTasks);
       if (!allTasks.hasOwnProperty(selectedList)) {
         allTasks[selectedList] = [];
       }
       allTasks[selectedList] = allTasks[selectedList].concat(newTask);
-      console.log(allTasks);
       return {
         tasks: allTasks,
         latestTask: ""
@@ -74,47 +75,81 @@ class TodoList extends React.Component {
     this.setState({ tasks: allTasks });
   };
 
-  render() {
-    console.log("rendering from todo list ", this.state);
+  handleFilterChange = (e, { value }) => {
+    this.setState({ filterOption: value });
+  };
+
+  getTasks() {
     const allTasks = this.state.tasks;
-    let displayTasks = [];
+    let displayList = [];
     for (let list of Object.keys(allTasks)) {
       if (list === this.props.selectedList) {
-        displayTasks = allTasks[list];
+        displayList = allTasks[list];
       }
     }
-
-    const listItems = displayTasks.map(item => {
-      return (
-        <TodoItem
-          task={item}
-          checkItem={this.handleCheckItem}
-          deleteItem={this.handleDeleteItem}
-          id={item.id}
-          key={item.id}
-        />
-      );
+    const filteredTasks = displayList.filter(item => {
+      if (this.state.filterOption === "Active") {
+        return item.active;
+      }
+      if (this.state.filterOption === "Completed") {
+        return !item.active;
+      }
+      return item;
     });
+    return filteredTasks.length > 0 ? (
+      filteredTasks.map(item => {
+        return (
+          <TodoItem
+            task={item}
+            checkItem={this.handleCheckItem}
+            deleteItem={this.handleDeleteItem}
+            id={item.id}
+            key={item.id}
+          />
+        );
+      })
+    ) : (
+      <span style={{ fontStyle: "italic" }}>
+        No{" "}
+        {this.state.filterOption === "All" ? "" : this.state.filterOption + " "}
+        tasks
+      </span>
+    );
+  }
 
+  render() {
+    console.log("rendering from todo list ", this.state);
     return (
       <div className="task-container">
-        <Input action fluid>
-          <input
-            name="task-input"
-            type="text"
-            placeholder="Add new task"
-            value={this.state.latestTask}
-            onChange={this.handleTaskInputChange}
-            onKeyPress={this.handleKeyPress}
-            autoFocus
-          ></input>
-          <Button name="add-task" type="submit" onClick={this.handleAddTask}>
-            Add
-          </Button>
-        </Input>
-        {Object.keys(allTasks).length > 0 ? (
+        <div className="task-inputs">
+          <Input action className="new-task-input">
+            <input
+              name="task-input"
+              type="text"
+              placeholder="Add new task"
+              value={this.state.latestTask}
+              onChange={this.handleTaskInputChange}
+              onKeyPress={this.handleKeyPress}
+              autoFocus
+            ></input>
+            <Button name="add-task" type="submit" onClick={this.handleAddTask}>
+              Add
+            </Button>
+          </Input>
+          <span>
+            Show{" "}
+            <Dropdown
+              inline
+              options={this.filterConfig}
+              value={this.state.filterOption}
+              onChange={this.handleFilterChange}
+            />
+            tasks
+          </span>
+        </div>
+        {Object.keys(this.state.tasks).length > 0 ? (
           <List divided verticalAlign="middle">
-            {listItems}
+            {this.getTasks()}
           </List>
         ) : (
           ""

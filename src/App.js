@@ -7,8 +7,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      options: [{ text: "React", value: "React" }],
-      currentOption: "React"
+      options: [],
+      currentOption: ""
     };
   }
 
