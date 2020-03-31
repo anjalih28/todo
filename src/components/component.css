@@ -11,6 +11,7 @@
 .task-inputs {
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .new-task-input {
